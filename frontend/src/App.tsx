@@ -27,7 +27,7 @@ function App() {
   }
 
   const [result, setResult] = useState('')
-
+  const [error, setError] = useState('')
   const resetHandler = useCallback(() => {
     setResult('')
     setFilePath('')
@@ -46,11 +46,16 @@ function App() {
           Select file
         </button>
         <span className="text-#71717a font-bold text-sm underline underline-current">{filePath}</span>
+        <span className='text-#ef4444 text-sm'>{error}</span>
         <span className="flex-1 flex justify-end gap-1">
           <button
             className="self-center flex items-center justify-center h-9 px-3 shadow rounded-md bg-#ef4444 text-#fafafa hover:bg-#ef4444/80 active:bg-#ef4444/80 text-sm font-medium"
             onClick={async () => {
-              setResult(await Convert(textTemplate))
+              try {
+                setResult(await Convert(textTemplate))
+              } catch (error) {
+                // setError(error as string)
+              }
             }}
           >
             {result && <span className="w-4 h-4 mr-2 i-lucide:check-circle" />}
