@@ -46,7 +46,7 @@ function App() {
           Select file
         </button>
         <span className="text-#71717a font-bold text-sm underline underline-current">{filePath}</span>
-        <span className='text-#ef4444 text-sm'>{error}</span>
+        <span className="text-#ef4444 text-sm">{error}</span>
         <span className="flex-1 flex justify-end gap-1">
           <button
             className="self-center flex items-center justify-center h-9 px-3 shadow rounded-md bg-#ef4444 text-#fafafa hover:bg-#ef4444/80 active:bg-#ef4444/80 text-sm font-medium"
@@ -90,8 +90,11 @@ function App() {
           className="flex min-h-60vh w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
         />
       </div>
-      <a href="dchat://im/start_conversation?name=zouhang" className='absolute flex items-center right-4 bottom-4 text-#71717a text-sm'>
-        <span className='w-4 h-4 mr-1 i-lucide:help-circle'></span>
+      <a
+        href="dchat://im/start_conversation?name=zouhang"
+        className="absolute flex items-center right-4 bottom-4 text-#71717a text-sm"
+      >
+        <span className="w-4 h-4 mr-1 i-lucide:help-circle"></span>
         Need help
       </a>
     </div>
