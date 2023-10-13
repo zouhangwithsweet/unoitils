@@ -13,8 +13,8 @@ function App() {
     "desc": [
       "完单量由{$0}单调至{$1}单",
       "峰期完单量由{$0}单调至{$1}单",
-      "指派成交率由{$0}%调至{$1}%",
-      "月度指派成交率由{$0}%调至{$1}%",
+      "指派成交率由{$0}调至{$1}",
+      "月度指派成交率由{$0}调至{$1}",
       "月度在线时长由{$0}小时调至{$1}小时",
       "合规任务由人或车证合规调至人车证双合规"
     ],
@@ -32,6 +32,16 @@ function App() {
     setResult('')
     setFilePath('')
   }, [])
+
+  // compares
+  const [pairs, setPairs] = useState<[number, number][]>([
+    [5, 11],
+    [6, 12],
+    [7, 13],
+    [8, 14],
+    [9, 15],
+    [10, 16],
+  ])
 
   return (
     <div className="relative min-h-100vh pb-6">
@@ -52,7 +62,8 @@ function App() {
             className="self-center flex items-center justify-center h-9 px-3 shadow rounded-md bg-#ef4444 text-#fafafa hover:bg-#ef4444/80 active:bg-#ef4444/80 text-sm font-medium"
             onClick={async () => {
               try {
-                setResult(await Convert(textTemplate))
+                if (!filePath || filePath === 'Please select excel' || !textTemplate || !pairs.length) return
+                setResult(await Convert(textTemplate, pairs))
               } catch (error) {
                 // setError(error as string)
               }
@@ -83,11 +94,39 @@ function App() {
         </span>
       </div>
 
+      <div className="px-4 flex flex-col items-stretch">
+        <label className="text-sm font-bold text-left">Compare column index pairs</label>
+        <div className="mt-2 flex flex-wrap items-center gap-1.5">
+          {pairs.map((pair, index) => (
+            <>
+              <div key={index} className="flex items-center gap-1.5 [&_input]:w-10">
+                <input
+                  value={pair[0]}
+                  className="flex h-8 rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                />
+                <span className="w-4 h4 i-lucide:git-compare"></span>
+                <input
+                  value={pair[1]}
+                  className="flex h-8 rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+                />
+              </div>
+              {index !== pairs.length - 1 && <span className="mx-2 h-4 border-l border-solid"></span>}
+            </>
+          ))}
+          <span
+            className="w-4 h-4 cursor-pointer i-lucide:plus-circle"
+            onClick={() => {
+              setPairs((prev) => [...prev, [0, 0]])
+            }}
+          ></span>
+        </div>
+      </div>
+      <hr className="mt-2 mx-4" />
       <div className="mt-2 px-4">
         <textarea
           value={textTemplate}
           onChange={(e) => setTextTemplate(e.target.value)}
-          className="flex min-h-60vh w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+          className="flex min-h-60vh w-full rounded-md border bg-transparent px-3 py-2 text-sm shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
         />
       </div>
       <a

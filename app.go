@@ -81,9 +81,9 @@ func (a *App) SelectFile() (string, error) {
   return selection, nil
 }
 
-func (a *App) Convert(textTemplate string) (string, error) {
+func (a *App) Convert(textTemplate string, compareIndexes [][]int) (string, error) {
   var innerTemplate TemplateData
-  log.Println(excelAbsPath)
+
   if excelAbsPath == "" {
     log.Println("No such File")
     return "", errors.New("please select a file")
@@ -120,28 +120,10 @@ func (a *App) Convert(textTemplate string) (string, error) {
 
     desc := make([]string, 0)
 
-    if row[5] != row[11] {
-      desc = append(desc, replaceTpl(row[5], row[11], innerTemplate.Desc[0]))
-    }
-
-    if row[6] != row[12] {
-      desc = append(desc, replaceTpl(row[6], row[12], innerTemplate.Desc[1]))
-    }
-
-    if row[7] != row[13] {
-      desc = append(desc, replaceTpl(intVal(row[7]), intVal(row[13]), innerTemplate.Desc[2]))
-    }
-
-    if row[8] != row[14] {
-      desc = append(desc, replaceTpl(intVal(row[8]), intVal(row[14]), innerTemplate.Desc[3]))
-    }
-
-    if row[9] != row[15] {
-      desc = append(desc, replaceTpl(row[9], row[15], innerTemplate.Desc[4]))
-    }
-
-    if row[10] != row[16] {
-      desc = append(desc, replaceTpl(row[10], row[16], innerTemplate.Desc[5]))
+    for cIndex, cRow := range compareIndexes {
+      if (row[cRow[0]] != row[cRow[1]]) {
+        desc = append(desc, replaceTpl(row[cRow[0]], row[cRow[1]], innerTemplate.Desc[cIndex]))
+      }
     }
 
     result[city] = ResultData{
@@ -167,7 +149,7 @@ func (a *App) Convert(textTemplate string) (string, error) {
     log.Println(err)
     return "", err
   }
-  log.Println(len(resultJSON))
+
   if len(resultJSON) < 3 {
     log.Println("")
     return "", errors.New("invalid file")
