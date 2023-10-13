@@ -96,26 +96,46 @@ function App() {
 
       <div className="px-4 flex flex-col items-stretch">
         <label className="text-sm font-bold text-left">Compare column index pairs</label>
-        <div className="mt-2 flex flex-wrap items-center gap-1.5">
+        <div className="mt-2 flex flex-wrap items-center gap-2">
           {pairs.map((pair, index) => (
-            <>
-              <div key={index} className="flex items-center gap-1.5 [&_input]:w-10">
-                <input
-                  value={pair[0]}
-                  className="flex h-8 rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                />
-                <span className="w-4 h4 i-lucide:git-compare"></span>
-                <input
-                  value={pair[1]}
-                  className="flex h-8 rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                />
-              </div>
-              {index !== pairs.length - 1 && <span className="mx-2 h-4 border-l border-solid"></span>}
-            </>
+            <div key={index + '_pair'} className="group px-2 relative flex items-center gap-1.5 [&_input]:w-10">
+              <input
+                value={pair[0]}
+                onChange={(e) => {
+                  if (/\d{1,2}/.test(e.target.value)) {
+                    const temp = pairs.slice(0)
+                    temp[index][0] = Number(e.target.value)
+                    setPairs(temp)
+                  }
+                }}
+                className="flex h-8 rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+              />
+              <span className="w-4 h4 i-lucide:git-compare"></span>
+              <input
+                value={pair[1]}
+                onChange={(e) => {
+                  if (/\d{1,2}/.test(e.target.value)) {
+                    const temp = pairs.slice(0)
+                    temp[index][1] = Number(e.target.value)
+                    setPairs(temp)
+                  }
+                }}
+                className="flex h-8 rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+              />
+              <span
+                className="hidden group-hover:block absolute top-0 right-0 translate-x-1.25 -translate-y-1.25 w-3 h-3 text-#71717a cursor-pointer i-lucide:minus-circle"
+                onClick={() => {
+                  const temp = pairs.slice(0)
+                  temp.splice(index, 1)
+                  setPairs(temp)
+                }}
+              ></span>
+            </div>
           ))}
           <span
-            className="w-4 h-4 cursor-pointer i-lucide:plus-circle"
+            className="mx-2 w-4 h-4 cursor-pointer i-lucide:plus-circle"
             onClick={() => {
+              if (pairs.length >= JSON.parse(textTemplate).desc.length) return
               setPairs((prev) => [...prev, [0, 0]])
             }}
           ></span>
