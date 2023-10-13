@@ -98,7 +98,7 @@ function App() {
         <label className="text-sm font-bold text-left">Compare column index pairs</label>
         <div className="mt-2 flex flex-wrap items-center gap-2">
           {pairs.map((pair, index) => (
-            <div key={index + '_pair'} className="group px-2 relative flex items-center gap-1.5 [&_input]:w-10">
+            <div key={index + '_pair'} className="group px-2 relative flex items-center gap-1.5 [&_input]:w-11 [&_input]:text-center">
               <input
                 value={pair[0]}
                 onChange={(e) => {
