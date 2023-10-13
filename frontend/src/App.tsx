@@ -43,9 +43,17 @@ function App() {
     [10, 16],
   ])
 
+  // document
+  const [show, setShow] = useState(false)
+
   return (
     <div className="relative min-h-100vh pb-6">
-      <div className="px-4 h-12 flex items-center border-b-1 border-#ececec font-bold text-#18181b">Excel to Json</div>
+      <div className="px-4 h-12 flex items-center justify-between border-b-1 border-#ececec font-bold text-#18181b">
+        <span>Excel to Json</span>
+        <div className="flex items-center gap-2">
+          <span onClick={() => setShow(!show)} className="w-5 h-5 cursor-pointer i-lucide:book-open"></span>
+        </div>
+      </div>
       <div className="px-4 py-2 flex items-center">
         <button
           className="self-center flex items-center justify-center mr-3 h-9 px-3 shadow rounded-md bg-#18181b text-#fafafa hover:bg-#18181b/80 active:bg-#18181b/80 text-sm font-medium"
@@ -98,7 +106,10 @@ function App() {
         <label className="text-sm font-bold text-left">Compare column index pairs</label>
         <div className="mt-2 flex flex-wrap items-center gap-2">
           {pairs.map((pair, index) => (
-            <div key={index + '_pair'} className="group px-2 relative flex items-center gap-1.5 [&_input]:w-11 [&_input]:text-center">
+            <div
+              key={index + '_pair'}
+              className="group px-2 relative flex items-center gap-1.5 [&_input]:w-11 [&_input]:text-center"
+            >
               <input
                 value={pair[0]}
                 onChange={(e) => {
@@ -156,6 +167,15 @@ function App() {
         <span className="w-4 h-4 mr-1 i-lucide:help-circle"></span>
         Need help
       </a>
+
+      <div
+        className={`fixed flex-col items-center justify-center top-0 left-0 right-0 bottom-0 bg-#000/40 transition-all ${
+          show ? 'flex' : 'hidden'
+        }`}
+        onClick={() => setShow(!show)}
+      >
+        <div className="min-w-400px min-h-380px bg-white rounded-md shadow"></div>
+      </div>
     </div>
   )
 }
